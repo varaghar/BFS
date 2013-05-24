@@ -20,7 +20,7 @@ typedef struct Node{
 
 typedef struct Vertex{
 int d;//-1 = infinity
-int color; //0 white ; 1gray ; 2 black
+int color; //0 white ; 1 gray ; 2 black
 Vertex* pre;
 Vertex* Next;
 int key;
@@ -84,7 +84,7 @@ void BFS(Vertex* s,Vertex** ArrayofNodes,int e,int v)
 	Vertex* Aux=(Vertex*)malloc(sizeof(Vertex));
 	Vertex** Vertices=(Vertex**)malloc(v*sizeof(Vertex*));
 	for(int i=0;i<=v;i++){
-		profiler.countOperation("Changing E",e,3);
+		profiler.countOperation("Changing E",v,3);
 		if(i==s->key){
 			
 		Vertices[i]=(Vertex*)malloc(sizeof(Vertex));
@@ -110,7 +110,7 @@ void BFS(Vertex* s,Vertex** ArrayofNodes,int e,int v)
 	Q->count=0;
 
 	Enqueue(s->key,Q);
-profiler.countOperation("Changing E",e,1);
+profiler.countOperation("Changing E",v,1);
 	while ( Q->count>0 )
 	{
 		
@@ -119,20 +119,20 @@ profiler.countOperation("Changing E",e,1);
 	
 		U->color=Vertices[dequeue]->color;
 		U->key=Vertices[dequeue]->key;
-		profiler.countOperation("Changing E",e,5);
+		profiler.countOperation("Changing E",v,5);
 		if(U->key!=s->key)
 		//printf("Processed: %d \n",U->key);
 		U->d=Vertices[dequeue]->d;
 		U->pre=Vertices[dequeue]->pre;
 		U->Next=Vertices[dequeue]->Next;
 
-		profiler.countOperation("Changing E",e,4);
+		profiler.countOperation("Changing E",v,4);
 
 		if (ArrayofNodes[U->key]!=NULL)
 		 Aux=ArrayofNodes[U->key];
 		
 		while(Aux!=NULL){
-			profiler.countOperation("Changing E",e);
+			profiler.countOperation("Changing E",v);
 			if(Vertices[Aux->key]->color==0)//white
 				{
 				 Vertices[Aux->key]->color=1;//gray
@@ -141,14 +141,14 @@ profiler.countOperation("Changing E",e,1);
 				 Vertices[Aux->key]->pre=U;
 				 Enqueue(Aux->key,Q);
 
-profiler.countOperation("Changing E",e,4);
+profiler.countOperation("Changing E",v,4);
 
 
 				}
 			U->color=2;//black
-profiler.countOperation("Changing E",e);
+profiler.countOperation("Changing E",v);
 			Aux=Aux->Next;
-			profiler.countOperation("Changing E",e);
+			profiler.countOperation("Changing E",v);
 		}
 	}
 }
@@ -187,15 +187,15 @@ BFS(adjList[0],adjList,4,5);
 	
 	
 getch();  */
-int e =100;
+int e =9000;
 int v=99;
 int a=0;
 int b=0;
 int r[2];
 Vertex* adjList[200];
 bool found=false;
-for(e=1000;e<=5000;e+=100){
- printf("e=%d \n",e);	
+for(v=100;e<=200;e+=10){
+ printf("v=%d \n",v);	
 for(int i=0;i<200;i++)
 {adjList[i]=NULL;}
 Vertex* Aux=(Vertex*)malloc(sizeof(Vertex));
