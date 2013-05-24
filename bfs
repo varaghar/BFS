@@ -86,7 +86,7 @@ void BFS(Vertex* s,Vertex** ArrayofNodes,int e,int v)
 	for(int i=0;i<=v;i++){
 		profiler.countOperation("Changing E",v,3);
 		if(i==s->key){
-			
+
 		Vertices[i]=(Vertex*)malloc(sizeof(Vertex));
 		Vertices[i]->color=1;//gray
 		Vertices[i]->d=0;
@@ -113,10 +113,10 @@ void BFS(Vertex* s,Vertex** ArrayofNodes,int e,int v)
 profiler.countOperation("Changing E",v,1);
 	while ( Q->count>0 )
 	{
-		
+
 		dequeue=Dequeue(Q);
 		U=makeVertex(Vertices[dequeue]->d,Vertices[dequeue]->color,Vertices[dequeue]->key,Vertices[dequeue]->Next,Vertices[dequeue]->pre);
-	
+
 		U->color=Vertices[dequeue]->color;
 		U->key=Vertices[dequeue]->key;
 		profiler.countOperation("Changing E",v,5);
@@ -130,13 +130,13 @@ profiler.countOperation("Changing E",v,1);
 
 		if (ArrayofNodes[U->key]!=NULL)
 		 Aux=ArrayofNodes[U->key];
-		
+
 		while(Aux!=NULL){
 			profiler.countOperation("Changing E",v);
 			if(Vertices[Aux->key]->color==0)//white
 				{
 				 Vertices[Aux->key]->color=1;//gray
-				
+
 				 Vertices[Aux->key]->d=U->d+1;
 				 Vertices[Aux->key]->pre=U;
 				 Enqueue(Aux->key,Q);
@@ -152,11 +152,11 @@ profiler.countOperation("Changing E",v);
 		}
 	}
 }
-	
+
 
 
 	int main(void){
-	
+
 //Vertex* adjList[5];
 
 
@@ -184,8 +184,8 @@ adjList[4]=makeVertex(0,0,1,NULL,NULL);
 
 
 BFS(adjList[0],adjList,4,5);
-	
-	
+
+
 getch();  */
 int e =9000;
 int v=99;
@@ -194,7 +194,7 @@ int b=0;
 int r[2];
 Vertex* adjList[200];
 bool found=false;
-for(v=100;e<=200;e+=10){
+for(v=100;v<=200;v+=10){
  printf("v=%d \n",v);	
 for(int i=0;i<200;i++)
 {adjList[i]=NULL;}
@@ -204,6 +204,7 @@ while(edges!=e){
 //Generating random edges
 do{//looking for edge in adj list
 	FillRandomArray(r,2,0,v,false,0);
+	//printf("edges generated %d\n",edges);
 	//printf("Generated numbers : %d %d \n",r[0],r[1]);
 	found=false;
 	Aux=NULL;
@@ -213,8 +214,8 @@ do{//looking for edge in adj list
 	Aux->Next=adjList[r[0]]->Next;
 	Aux->pre=adjList[r[0]]->pre; */
 		Aux=adjList[r[0]];
-	
-	
+
+
 	}
 while(Aux!=NULL){
 	if(Aux->key==r[1]) found=true;
@@ -255,6 +256,4 @@ profiler.showReport();
 
 	return 0;
 	}	
-
-
 
