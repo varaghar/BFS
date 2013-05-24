@@ -1,0 +1,260 @@
+#include "stdio.h" 
+#include "stdlib.h" 
+#include "conio.h" 
+#include "Profiler.h"
+
+Profiler profiler("BFS");
+
+typedef struct Queue{
+int first;
+int last;
+int a[12000];
+int count;
+}Queue;
+
+typedef struct Node{
+   Node*  Next ;
+	int key; 
+}Node;
+
+
+typedef struct Vertex{
+int d;//-1 = infinity
+int color; //0 white ; 1gray ; 2 black
+Vertex* pre;
+Vertex* Next;
+int key;
+}Vertex;
+
+
+void Enqueue(int s ,Queue* Q){
+	if (Q->count >= 4999)
+		printf("Warning: queue overflow enqueue x=\n");
+        else {
+             
+      
+Q->last=(Q->last+1);
+Q->a[Q->last]=s;
+Q->count=Q->count+1;
+		}
+}
+
+
+int Dequeue(Queue* Q){
+
+int x;
+
+        if (Q->count <= 0) printf("Warning: empty queue dequeue.\n");
+        else {
+                x = Q->a[ Q->first];
+                Q->first = (Q->first+1);
+                Q->count = Q->count - 1;
+        }
+
+        return x;
+}
+
+
+
+Vertex* makeVertex(Vertex* V){
+Vertex* R=(Vertex*)malloc(sizeof(Vertex));
+R->d=V->d;
+R->color=V->color;
+R->key=V->key;
+R->Next=V->Next;
+R->pre=V->pre;
+return R;
+}
+
+Vertex* makeVertex(int d,int color,int key,Vertex* Next,Vertex* pre){
+Vertex* R=(Vertex*)malloc(sizeof(Vertex));
+R->d=d;
+R->color=color;
+R->key=key;
+R->Next=Next;
+R->pre=pre;
+return R;
+}
+
+void BFS(Vertex* s,Vertex** ArrayofNodes,int e,int v)
+{	//printf("Processed: %d \n",s->key);
+
+	int dequeue;
+	Vertex* U;
+	Vertex* Aux=(Vertex*)malloc(sizeof(Vertex));
+	Vertex** Vertices=(Vertex**)malloc(v*sizeof(Vertex*));
+	for(int i=0;i<=v;i++){
+		profiler.countOperation("Changing E",e,3);
+		if(i==s->key){
+			
+		Vertices[i]=(Vertex*)malloc(sizeof(Vertex));
+		Vertices[i]->color=1;//gray
+		Vertices[i]->d=0;
+		Vertices[i]->pre=NULL;
+		Vertices[i]->key=i;
+		Vertices[i]->Next=NULL;
+		}
+		else
+	Vertices[i]=(Vertex*)malloc(sizeof(Vertex));
+	Vertices[i]->color=0;//white
+	Vertices[i]->d=-1;
+	Vertices[i]->pre=NULL;
+	Vertices[i]->key=i;
+	Vertices[i]->Next=NULL;
+
+	}
+
+	Queue* Q=(Queue*)malloc(sizeof(Queue));
+	Q->first=1;
+	Q->last=0;
+	Q->count=0;
+
+	Enqueue(s->key,Q);
+profiler.countOperation("Changing E",e,1);
+	while ( Q->count>0 )
+	{
+		
+		dequeue=Dequeue(Q);
+		U=makeVertex(Vertices[dequeue]->d,Vertices[dequeue]->color,Vertices[dequeue]->key,Vertices[dequeue]->Next,Vertices[dequeue]->pre);
+	
+		U->color=Vertices[dequeue]->color;
+		U->key=Vertices[dequeue]->key;
+		profiler.countOperation("Changing E",e,5);
+		if(U->key!=s->key)
+		//printf("Processed: %d \n",U->key);
+		U->d=Vertices[dequeue]->d;
+		U->pre=Vertices[dequeue]->pre;
+		U->Next=Vertices[dequeue]->Next;
+
+		profiler.countOperation("Changing E",e,4);
+
+		if (ArrayofNodes[U->key]!=NULL)
+		 Aux=ArrayofNodes[U->key];
+		
+		while(Aux!=NULL){
+			profiler.countOperation("Changing E",e);
+			if(Vertices[Aux->key]->color==0)//white
+				{
+				 Vertices[Aux->key]->color=1;//gray
+				
+				 Vertices[Aux->key]->d=U->d+1;
+				 Vertices[Aux->key]->pre=U;
+				 Enqueue(Aux->key,Q);
+
+profiler.countOperation("Changing E",e,4);
+
+
+				}
+			U->color=2;//black
+profiler.countOperation("Changing E",e);
+			Aux=Aux->Next;
+			profiler.countOperation("Changing E",e);
+		}
+	}
+}
+	
+
+
+	int main(void){
+	
+//Vertex* adjList[5];
+
+
+
+/*
+adjList[0]=makeVertex(0,0,1,NULL,NULL);
+adjList[0]->Next=makeVertex(0,0,2,NULL,NULL);
+adjList[3]=makeVertex(0,0,2,NULL,NULL);
+adjList[1]=makeVertex(0,0,0,NULL,NULL);
+adjList[1]->Next=makeVertex(0,0,4,NULL,NULL);
+adjList[4]=makeVertex(0,0,1,NULL,NULL);
+adjList[2]=makeVertex(0,0,3,NULL,NULL);
+adjList[2]->Next=makeVertex(0,0,0,NULL,NULL);
+*/
+
+/*
+adjList[0]=makeVertex(0,0,1,NULL,NULL);
+adjList[0]->Next=makeVertex(0,0,2,NULL,NULL);
+adjList[1]=makeVertex(0,0,0,NULL,NULL);
+adjList[1]->Next=makeVertex(0,0,4,makeVertex(0,0,2,NULL,NULL),NULL);
+adjList[2]=makeVertex(0,0,0,NULL,NULL);
+adjList[2]->Next=makeVertex(0,0,3,makeVertex(0,0,1,NULL,NULL),NULL);
+adjList[3]=makeVertex(0,0,2,NULL,NULL);
+adjList[4]=makeVertex(0,0,1,NULL,NULL);
+
+
+BFS(adjList[0],adjList,4,5);
+	
+	
+getch();  */
+int e =100;
+int v=99;
+int a=0;
+int b=0;
+int r[2];
+Vertex* adjList[200];
+bool found=false;
+for(e=1000;e<=5000;e+=100){
+ printf("e=%d \n",e);	
+for(int i=0;i<200;i++)
+{adjList[i]=NULL;}
+Vertex* Aux=(Vertex*)malloc(sizeof(Vertex));
+int edges=0;
+while(edges!=e){
+//Generating random edges
+do{//looking for edge in adj list
+	FillRandomArray(r,2,0,v,false,0);
+	//printf("Generated numbers : %d %d \n",r[0],r[1]);
+	found=false;
+	Aux=NULL;
+	if(adjList[r[0]]!=NULL) {/*Aux->color=adjList[r[0]]->color;
+	Aux->key=adjList[r[0]]->key;
+	Aux->d=adjList[r[0]]->d;
+	Aux->Next=adjList[r[0]]->Next;
+	Aux->pre=adjList[r[0]]->pre; */
+		Aux=adjList[r[0]];
+	
+	
+	}
+while(Aux!=NULL){
+	if(Aux->key==r[1]) found=true;
+	Aux=Aux->Next;
+}
+}while(found); 
+edges++;
+
+//add edge to adjList of r[0]
+if(adjList[r[0]]!=NULL) {Aux=adjList[r[0]];
+while(Aux->Next!=NULL){
+	Aux=Aux->Next;
+}
+}
+if(Aux==NULL) adjList[r[0]]=makeVertex(0,0,r[1],NULL,NULL); else
+Aux->Next=makeVertex(0,0,r[1],NULL,NULL);
+
+
+
+//add edge to adjList of r[1]
+if(adjList[r[1]]!=NULL){ Aux=adjList[r[1]];
+while(Aux->Next!=NULL){
+	Aux=Aux->Next;
+}
+}
+if(Aux==NULL) adjList[r[1]]=makeVertex(0,0,r[0],NULL,NULL); else
+Aux->Next=makeVertex(0,0,r[0],NULL,NULL);
+
+}
+for(int i=0;i<v;i++){
+	if (adjList[i]!=NULL){ Aux=adjList[i]; break; }
+}
+
+BFS(Aux,adjList,e,v);
+}
+ 
+profiler.showReport();
+
+	return 0;
+	}	
+
+
+
