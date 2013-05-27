@@ -1,0 +1,88 @@
+package Interface;
+
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
+
+import Core.Product;
+
+public class ProductPanel extends JLayeredPane{
+   /**
+   * 
+	 */
+	private static final long serialVersionUID = -4683453654919924738L;
+private Product P;
+   
+  
+   
+   public ProductPanel(Product P,int iquantity){
+	   this.setP(P);
+
+	   ImageIcon Image=new ImageIcon(P.getImage());
+	   
+	  
+	   Image=new ImageIcon((Image.getImage().getScaledInstance(300, 170, java.awt.Image.SCALE_SMOOTH)));
+	   JLabel ImageL=new JLabel(Image);
+	  
+	   JLabel name=new JLabel(P.getName(),JLabel.CENTER);
+	   JLabel price=new JLabel(""+P.getPrice(),JLabel.CENTER);
+	   JLabel quantity=new JLabel(""+iquantity,JLabel.CENTER);
+	   JLabel description=new JLabel(P.getDescription(),JLabel.CENTER);
+	   
+	   JButton Purchase=new JButton("Purchase");
+	  
+	   
+	   add(name);
+	   name.setBounds(0, 0, 300, 20);
+	   add(ImageL);
+	   ImageL.setBounds(0,20,300,170);
+	   add(price);
+	   price.setBounds(0,190,150,20);
+	   add(quantity);
+	   quantity.setBounds(150,190,150,20);
+	   add(description);description.setOpaque(true);
+	   description.setBounds(0, 210, 300, 90);
+	   add(Purchase);
+	   Purchase.setBounds(100,300,100,30);	   
+	
+	 /*  
+	   setLayout(new GridBagLayout());
+	    GridBagConstraints c = new GridBagConstraints();
+	   
+	    //natural height, maximum width
+	    c.fill = GridBagConstraints.HORIZONTAL;
+	    
+	   
+	   
+	    c.weightx = 0.5;
+	   
+	    c.fill = GridBagConstraints.HORIZONTAL;
+	    c.gridx = 0;
+	    c.gridy = 0;
+	    add(name, c);
+	 */
+	   
+   }
+
+
+
+/**
+ * @return the p
+ */
+public Product getP() {
+	return P;
+}
+
+
+
+/**
+ * @param p the p to set
+ */
+public void setP(Product p) {
+	P = p;
+}
+}
